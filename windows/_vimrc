@@ -1,0 +1,167 @@
+filetype off
+
+"==============================
+" 各種オプションの設定
+"==============================
+" タブ文字の表示幅
+set tabstop=4
+" タブ入力を複数の空白入力に置き換える
+set expandtab
+" Vimが挿入するインデントの幅
+set shiftwidth=4
+" スワップファイルは使わない
+set noswapfile
+" backupも不要
+set nobackup
+set noundofile
+" 行番号表示
+set number
+" 文字列が右端に達しても折り返さない
+"set nowrap
+" ウインドウのタイトルバーにファイルのパス情報等を表示
+set title
+" コマンドラインに使われる画面上の行数
+set cmdheight=2
+" エディタウィンドウの末尾から2行目にステータスラインを常時表示させる
+set laststatus=2
+" ステータス行に表示させる情報
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+" 入力中のコマンドを表示する
+set showcmd
+" tab文字等を可視化
+set list
+set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
+" 各種文字コード
+set encoding=utf-8
+set fenc=utf-8
+set fileencoding=utf-8
+set fileformats=unix,dos,mac
+
+" tag読み込み
+set tags=./tags;
+" helpでハマる問題への対応
+set notagbsearch
+" file pathの区切り文字を\ではなく/にする(Windows向け)
+set shellslash
+
+
+"==============================
+" plugin管理
+"==============================
+let s:dein_dir = expand('$VIM/plugins/suzuki/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . s:dein_repo_dir
+endif
+
+if dein#load_state(s:dein_dir)
+    call dein#begin(s:dein_dir)
+
+    " dein本体
+    call dein#add('Shougo/dein.vim')
+
+    " build等の非同期処理実行pulugin
+    call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+
+    " Unite関連plugin
+    call dein#add('Shougo/unite.vim')
+    call dein#add('Shougo/neoyank.vim')
+    call dein#add('Shougo/neomru.vim')
+    call dein#add('Shougo/unite-outline')
+
+    " 文字列補完系plugin
+    "call dein#add('Shougo/neocomplecache')
+    "call dein#add('Shougo/neosnippet')
+    "call dein#add('Shougo/neosnippet-snippets')
+
+    " visualモードでの'*'を利用可能にするplugin
+    call dein#add('nelstrom/vim-visual-star-search')
+
+    " 全角スペースを表示
+    call dein#add('thinca/vim-zenspace')
+
+    " Git操作関連plugin
+    call dein#add('airblade/vim-gitgutter')
+    call dein#add('tpope/vim-fugitive')
+
+    call dein#end()
+    call dein#save_state()
+endif
+
+if dein#check_install()
+  call dein#install()
+endif
+
+" ステータス行に現在のgitブランチを表示(fugitiveが存在する場合のみ)
+if isdirectory(s:dein_dir . '/repos/github.com/tpope/vim-fugitive/')
+  set statusline+=%{fugitive#statusline()}
+endif
+
+"==============================
+" 各種キーバインド
+"==============================
+" jjでインサートモード -> ノーマルモード
+inoremap <silent> jj <ESC>
+
+"" tag jump関連のキーバインドあれこれ
+" [tag jump] カーソルの単語の定義先にジャンプ（複数候補はリスト表示）
+nnoremap tj :exe("tjump ".expand('<cword>'))<CR>
+" [tag back] tag stack を戻る
+nnoremap tb :pop<CR>
+" [tag next] tag stack を進む
+nnoremap tn :tag<CR>
+" [tag vertical] 縦にウィンドウを分割してジャンプ
+nnoremap tv :vsp<CR> :exe("tjump ".expand('<cword>'))<CR>
+" [tag horizon] 横にウィンドウを分割してジャンプ
+nnoremap th :split<CR> :exe("tjump ".expand('<cword>'))<CR>
+" [tag tab] 新しいタブでジャンプ
+nnoremap tt :tab sp<CR> :exe("tjump ".expand('<cword>'))<CR>
+" [tags list] tag list を表示
+nnoremap tl :ts<CR>
+
+" tab移動(左右)
+nnoremap <silent> <space>l gt
+nnoremap <silent> <space>h gT
+
+" outline解析表示
+nnoremap <silent> <space>o :<C-u>Unite -vertical -winwidth=50 outline<CR><ESC>
+
+" Unite関連
+let g:unite_enable_start_insert=1
+let g:unite_source_history_yank_enable =1
+let g:unite_source_file_mru_limit = 200
+nnoremap <silent> ,uy :<C-u>Unite history/yank<CR>
+nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> ,um :<C-u>Unite file_mru buffer<CR>
+nnoremap <silent> ,up  :<C-u>Unite file_rec/async:!<CR>
+
+" 閉じ括弧の自動補完
+inoremap {<Enter> {}<Left><CR><ESC><S-o>
+inoremap (<Enter> ()<Left><CR><ESC><S-o>
+
+" grep関連
+set grepprg=grep\ -rnIH\ --exclude-dir=.svn\ --exclude-dir=.git
+autocmd QuickfixCmdPost vimgrep copen
+autocmd QuickfixCmdPost grep copen
+" grep の書式を挿入
+nnoremap <expr> <Space>g ':vimgrep /\<' . expand('<cword>') . '\>/j **/*.' . expand('%:e')
+nnoremap <expr> <Space>G ':sil grep! ' . expand('<cword>') . ' *'
+
+" 文字列置換用
+nnoremap <expr> <Space>r ':%s/' . expand('<cword>') . '/**/gc'
+
+" Diff
+nnoremap <expr> <Space>D ':vertical diffsplit '
+
+" 改行を含まない編集
+" 1行削除
+noremap <Space>d 0v$hx
+" 1行yank
+noremap <Space>y 0v$hy
+

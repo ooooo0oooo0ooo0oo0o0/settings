@@ -1,0 +1,35 @@
+""""""""""""""""""""""""""""""""""""""""
+" _gvimrcにはUI関連の設定のみを記載する
+""""""""""""""""""""""""""""""""""""""""
+" 要らんツールバーを非表示にする
+set guioptions-=T
+
+" font
+if has('win32')
+  " Windows用
+  "set guifont=MS_Gothic:h10:cSHIFTJIS
+  set guifont=Myrica_M:h11:cSHIFTJIS
+  " 行間隔の設定
+  set linespace=1
+  " 一部のUCS文字の幅を自動計測して決める
+  if has('kaoriya')
+    set ambiwidth=auto
+  endif
+endif
+
+" windowサイズ
+if has("gui_running")
+  set lines=45 columns=150
+endif
+
+" 検索文字列の反転及びカーソル位置が見辛いので、highlightを変更
+autocmd ColorScheme * highlight Search term=reverse ctermfg=0 ctermbg=222 guifg=#FFD700 guibg=#008000
+
+" カラー設定
+set t_Co=256
+colorscheme molokai
+let g:molokai_original = 1
+let g:rehash256 = 1
+set background=dark
+syntax on
+
