@@ -38,7 +38,10 @@ set tags=./tags;
 
 " helpでハマる問題の対処
 set notagbsearch
-"
+
+" helpの言語
+set helplang=ja,en
+
 " 保存時に末尾の空白を削除
 autocmd BufWritePre * :%s/\s\+$//ge
 
@@ -81,8 +84,17 @@ call dein#add('tpope/vim-fugitive')
 " visualモードでの'*'を利用可能にするplugin
 call dein#add('nelstrom/vim-visual-star-search')
 
+" 括弧等の操作
+call dein#add('tpope/vim-surround')
+
 " 全角スペースを表示
 call dein#add('thinca/vim-zenspace')
+
+" 日本語Help
+call dein#add('vim-jp/vimdoc-ja')
+
+" color scheme
+call dein#add('tomasr/molokai')
 
 call dein#end()
 
@@ -110,9 +122,13 @@ syntax on
 "==============================
 " jjでインサートモード -> ノーマルモード
 inoremap <silent> jj <ESC>
+inoremap <silent> っｊ <ESC>
 
 " PPでyankレジスタ先頭の内容を貼り付け
 noremap PP "0p
+
+" yankレジスタの単語に置き換え
+noremap <Space>p diwh"0p
 
 " tag関連
 " [tag jump] カーソルの単語の定義先にジャンプ（複数候補はリスト表示）
@@ -143,7 +159,7 @@ nnoremap <silent> <space>o :<C-u>Unite -vertical -winwidth=50 outline<CR><ESC>
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable =1
 let g:unite_source_file_mru_limit = 200
-" file_mruの表示フォーマットを指定。空にすると表示スピードが高速化される
+" file_mruの表示フォーマットを指定。空にすると表示スピードが高速化される(らしい)
 let g:unite_source_file_mru_filename_format = ''
 
 nnoremap <silent> ,uy :<C-u>Unite history/yank<CR><ESC>
@@ -151,7 +167,7 @@ nnoremap <silent> ,ub :<C-u>Unite buffer<CR><ESC>
 nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR><ESC>
 nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR><ESC>
 nnoremap <silent> ,um :<C-u>Unite file_mru buffer<CR><ESC>
-nnoremap <silent> ,up  :<C-u>Unite file_rec/async:!<CR><ESC>
+nnoremap <silent> ,up :<C-u>Unite file_rec/async:!<CR><ESC>
 
 " 閉じ括弧の自動補完
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
@@ -175,5 +191,4 @@ nnoremap <expr> <Space>D ':vertical diffsplit '
 noremap <Space>d 0v$hx
 " 1行yank
 noremap <Space>y 0v$hy
-
 

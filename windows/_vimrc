@@ -81,6 +81,9 @@ if dein#load_state(s:dein_dir)
     " visualモードでの'*'を利用可能にするplugin
     call dein#add('nelstrom/vim-visual-star-search')
 
+    " 括弧等の操作
+    call dein#add('tpope/vim-surround')
+
     " 全角スペースを表示
     call dein#add('thinca/vim-zenspace')
 
