@@ -1,51 +1,6 @@
 filetype off
 
 "==============================
-" 各種オプションの設定
-"==============================
-" タブ文字の表示幅
-set tabstop=4
-" タブ入力を複数の空白入力に置き換える
-set expandtab
-" Vimが挿入するインデントの幅
-set shiftwidth=4
-" 自動インデント
-set autoindent
-" スワップファイルは使わない
-set noswapfile
-" 行番号表示
-set number
-" 文字列が右端に達しても折り返さない
-set nowrap
-" 上端/下端から指定行数分の視界を確保
-set scrolloff=5
-" ウインドウのタイトルバーにファイルのパス情報等を表示
-set title
-" コマンドラインに使われる画面上の行数
-set cmdheight=2
-" エディタウィンドウの末尾から2行目にステータスラインを常時表示させる
-set laststatus=2
-" ステータス行に表示させる情報
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
-" 入力中のコマンドを表示する
-set showcmd
-" tab文字等を可視化
-set list
-set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%
-
-" tag読み込み
-set tags=./tags;
-
-" helpでハマる問題の対処
-set notagbsearch
-
-" helpの言語
-set helplang=ja,en
-
-" 保存時に末尾の空白を削除
-autocmd BufWritePre * :%s/\s\+$//ge
-
-"==============================
 " plugin管理
 "==============================
 let s:dein_path = expand('~/.vim/dein')
@@ -76,8 +31,53 @@ if dein#check_install()
   call dein#install()
 endif
 
+"==============================
+" 各種オプションの設定
+"==============================
+" タブ文字の表示幅
+set tabstop=4
+" タブ入力を複数の空白入力に置き換える
+set expandtab
+" Vimが挿入するインデントの幅
+set shiftwidth=4
+" 自動インデント
+set autoindent
+" スワップファイルは使わない
+set noswapfile
+" 行番号表示
+set number
+" 文字列が右端に達しても折り返さない
+set nowrap
+" 上端/下端から指定行数分の視界を確保
+set scrolloff=5
+" ウインドウのタイトルバーにファイルのパス情報等を表示
+set title
+" コマンドラインに使われる画面上の行数
+set cmdheight=2
+" エディタウィンドウの末尾から2行目にステータスラインを常時表示させる
+set laststatus=2
+" ステータス行に表示させる情報
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+" 入力中のコマンドを表示する
+set showcmd
+" tab文字等を可視化
+set list
+set listchars=tab:≫-,trail:-,extends:≫,precedes:≪,nbsp:%
+
+" tag読み込み
+set tags=./tags;
+
+" helpでハマる問題の対処
+set notagbsearch
+
+" helpの言語
+set helplang=ja,en
+
+" 保存時に末尾の空白を削除
+autocmd BufWritePre * :%s/\s\+$//ge
+
 " ステータス行に現在のgitブランチを表示(fugitiveが存在する場合のみ)
-if isdirectory(expand('~/.vim/dein/repos/github.com/tpope/vim-fugitive/'))
+if isdirectory(expand(dein#get('vim-fugitive').path))
   set statusline+=%{fugitive#statusline()}
 endif
 
