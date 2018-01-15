@@ -1,0 +1,63 @@
+##############################
+## dein本体
+##############################
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+##############################
+## Unite関連plugin
+##############################
+[[plugins]]
+repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+depends = ['unite.vim']
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+depends = ['unite.vim']
+
+[[plugins]]
+repo = 'Shougo/unite-outline'
+depends = ['unite.vim']
+
+##############################
+## 非同期実行plugin
+##############################
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+
+##############################
+## git操作関係plugin
+##############################
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+##############################
+## 他
+##############################
+[[plugins]]
+# color scheme
+repo = 'tomasr/molokai'
+
+[[plugins]]
+# 日本語Document
+repo = 'vim-jp/vimdoc-ja'
+
+[[plugins]]
+# 全角スペースを表示
+repo = 'thinca/vim-zenspace'
+
+[[plugins]]
+# 括弧等の操作
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+# visualモードでの'*'を利用可能にするplugin
+repo = 'nelstrom/vim-visual-star-search'
+

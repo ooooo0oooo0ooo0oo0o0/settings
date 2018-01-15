@@ -58,45 +58,19 @@ endif
 
 execute 'set runtimepath^=' . s:dein_repo_path
 
-call dein#begin(expand('~/.vim/dein/'))
+if dein#load_state(s:dein_path)
+  call dein#begin(expand('~/.vim/dein/'))
 
-" dein本体
-call dein#add('Shougo/dein.vim')
+  let s:toml_path = '~/.vim/dein_toml'
+  let s:toml      = s:toml_path . '/dein.toml'
+  let s:lazy_toml = s:toml_path . '/dein_lazy.toml'
 
-" build等の非同期処理実行pulugin
-call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
-" Unite関連plugin
-call dein#add('Shougo/unite.vim')
-call dein#add('Shougo/neoyank.vim')
-call dein#add('Shougo/neomru.vim')
-call dein#add('Shougo/unite-outline')
-
-" 文字列補完系plugin
-call dein#add('Shougo/neocomplcache')
-call dein#add('Shougo/neosnippet')
-call dein#add('Shougo/neosnippet-snippets')
-
-" Git操作関連plugin
-call dein#add('airblade/vim-gitgutter')
-call dein#add('tpope/vim-fugitive')
-
-" visualモードでの'*'を利用可能にするplugin
-call dein#add('nelstrom/vim-visual-star-search')
-
-" 括弧等の操作
-call dein#add('tpope/vim-surround')
-
-" 全角スペースを表示
-call dein#add('thinca/vim-zenspace')
-
-" 日本語Help
-call dein#add('vim-jp/vimdoc-ja')
-
-" color scheme
-call dein#add('tomasr/molokai')
-
-call dein#end()
+  call dein#end()
+  call dein#save_state()
+endif
 
 if dein#check_install()
   call dein#install()
