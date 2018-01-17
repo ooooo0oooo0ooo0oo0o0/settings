@@ -65,7 +65,8 @@ set list
 set listchars=tab:≫-,trail:-,extends:≫,precedes:≪,nbsp:%
 
 " tag読み込み
-set tags=./tags;
+au BufNewFile,BufRead *.c,*.h,*.cpp,*.hpp set tags=./tag_cxx.tags;
+au BufNewFile,BufRead *.php set tags=./tag_php.tags;
 
 " helpでハマる問題の対処
 set notagbsearch
