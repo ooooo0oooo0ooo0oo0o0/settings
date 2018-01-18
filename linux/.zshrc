@@ -1,18 +1,15 @@
 #########################################
 # 基本設定
 #########################################
-# 言語設定
-export LANG=ja_JP.UTF-8
-
 # 色を使用
 autoload -Uz colors
 colors
 
 # プロンプト表示方法
-PROMPT="%F{107}[%n@%C] %f"
+PROMPT="%(?.%F{107}.%F{202})[%n@%C] %f"
 
-# モード選択
-bindkey -v
+# ひとまずemacsモード
+bindkey -e
 
 #########################################
 # 各種Option
@@ -41,15 +38,6 @@ DIRSTACKSIZE=100
 setopt interactive_comments
 
 #########################################
-# 各種Alias
-#########################################
-alias ll='ls -lsa'
-alias v=vim
-alias vi=vim
-alias vz='vim ~/.zshrc'
-alias p=pwd
-
-#########################################
 # 補完系設定
 #########################################
 # 補完機能を有効化
@@ -65,6 +53,7 @@ setopt magic_equal_subst
 # メニュー補完設定
 zmodload zsh/complist
 zstyle ':completion:*' menu select=2
+zstyle ':completion:*' list-colors "${LS_COLORS}"
 setopt menu_complete
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
@@ -99,6 +88,15 @@ setopt hist_ignore_space
 
 # 同時起動中のzsh間でhistoryを共有
 setopt share_history
+
+#########################################
+# 各種Alias
+#########################################
+alias l='ls -lsa'
+alias v=vim
+alias vi=vim
+alias vz='vim ~/.zshrc'
+alias p=pwd
 
 #########################################
 # 他

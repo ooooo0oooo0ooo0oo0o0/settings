@@ -75,13 +75,22 @@ EIGHTBIT 1
 # 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
 # Background color codes:
 # 40=black 41=red 42=green 43=yellow 44=blue 45=magenta 46=cyan 47=white
+
+# 256色設定を行う場合は以下の様に書く。
+# 前面色 : 38;05;<色番号>
+# 背面色 : 48;05;<色番号>
+#
+# 色と番号の対比は、下記commandにて確認可能。
+# > for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo
+#
+# 設定変更後の反映は、下記commandにて行う。
+# > eval `dircolors -b ~/.dir_colors`
+
 #NORMAL 00	# no color code at all
-#FILE 00	# normal file, use no color at all
+FILE 38;05;179	# normal file
 RESET 0 # reset to "normal" color
-#DIR 01;34	# directory
-DIR 01;36	# directory
-LINK 01;36	# symbolic link (If you set this to 'target' instead of a
-		# numerical value, the color is as for the file pointed to.)
+DIR 38;05;079	# directory
+LINK 38;05;130	# symbolic link
 MULTIHARDLINK 00	# regular file with more than one link
 FIFO 40;33	# pipe
 SOCK 01;35	# socket
@@ -98,7 +107,7 @@ OTHER_WRITABLE 34;42 # dir that is other-writable (o+w) and not sticky
 STICKY 37;44	# dir with the sticky bit set (+t) and not other-writable
 
 # This is for files with execute permission:
-EXEC 01;32
+EXEC 38;05;077
 
 # List any file extensions like '.gz' or '.tar' that you would like ls
 # to colorize below. Put the extension, a space, and the color init string.
