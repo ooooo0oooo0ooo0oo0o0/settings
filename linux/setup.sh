@@ -27,3 +27,7 @@ cd ../common/dein_toml
 for toml_file in `\find . -maxdepth 1 -type f`; do
     ln -Fis "$PWD/$toml_file" $TOML_DIR/$toml_file
 done
+
+# はじめにzshrcを一発compileしとく
+zcompile $HOME/.zshrc
+
