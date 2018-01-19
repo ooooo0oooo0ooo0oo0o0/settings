@@ -63,7 +63,9 @@ bindkey -M menuselect 'n' accept-and-infer-next-history
 
 # 中間生成物を補完候補から外す
 zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
-bindkey '^r' history-incremental-search-backward
+
+# gitの補完を高速化
+zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
 
 #########################################
 # history系設定
@@ -92,11 +94,21 @@ setopt share_history
 #########################################
 # 各種Alias
 #########################################
+# 基本alias
 alias l='ls -lsa'
 alias v=vim
 alias vi=vim
 alias vz='vim ~/.zshrc'
 alias p=pwd
+
+# git関連
+alias ga='git add -u'
+alias gb='git branch'
+alias gc='git checkout'
+alias gd='git diff'
+alias gg='git status'
+alias gl='git log --stat'
+alias gs='git show'
 
 #########################################
 # 他
