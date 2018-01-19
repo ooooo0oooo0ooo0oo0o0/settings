@@ -2,11 +2,11 @@
 # 基本設定
 #########################################
 # 色を使用
-autoload -Uz colors
-colors
+autoload -Uz colors && colors
 
 # プロンプト表示方法
 PROMPT="%(?.%F{107}.%F{202})[%n@%C] %f"
+RPROMPT='%F{208}%d'
 
 # ひとまずemacsモード
 bindkey -e
@@ -41,8 +41,7 @@ setopt interactive_comments
 # 補完系設定
 #########################################
 # 補完機能を有効化
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit
 
 # 補完候補が複数の場合に一覧表示
 setopt auto_menu
@@ -54,18 +53,27 @@ setopt magic_equal_subst
 zmodload zsh/complist
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*' list-colors "${LS_COLORS}"
-setopt menu_complete
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'n' accept-and-infer-next-history
+# tab押下で即時にlist選択したい場合は以下を有効化する(不便なので無効化)
+#setopt menu_complete
 
 # 中間生成物を補完候補から外す
 zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
 
 # gitの補完を高速化
-zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
+GIT_VERSION=$(git --version | sed -e "s/git version //" | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}')
+if [ $GIT_VERSION -ge 10801 ]; then
+  # version 1.8.1以降は"git-completion.zsh"の利用が可能
+  zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
+else
+  # やっつけで、ver1.7.1から抜いた"git-completion.bash"を利用
+  autoload -Uz bashcompinit && bashcompinit
+  source ~/.git-completion.bash
+fi
 
 #########################################
 # history系設定
@@ -99,15 +107,18 @@ alias l='ls -lsa'
 alias v=vim
 alias vi=vim
 alias vz='vim ~/.zshrc'
-alias p=pwd
+alias ...='cd ../..'
 
 # git関連
 alias ga='git add -u'
 alias gb='git branch'
 alias gc='git checkout'
+alias gcm='git commit'
+alias gcma='git commit --amend'
 alias gd='git diff'
 alias gg='git status'
 alias gl='git log --stat'
+alias gp='git pull'
 alias gs='git show'
 
 #########################################
