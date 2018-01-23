@@ -8,9 +8,42 @@ autoload -Uz colors && colors
 PROMPT="%(?.%F{107}.%F{202})[%n@%C] %f"
 RPROMPT='%F{208}%d'
 
-# ひとまずemacsモード
-bindkey -e
+# キーバインド("vi" or "emacs")
+KEY_BIND="vi"
 
+if [ "${KEY_BIND}" = "vi" ]; then
+  ##############
+  # viキーバインド
+  ##############
+  bindkey -v
+
+  # viのモードをプロンプトに表示する
+  function zle-line-init zle-keymap-select {
+      VIM_NORMAL="%F{081}[NORMAL] %F{208}%d"
+      VIM_INSERT="%F{184}[INSERT] %F{208}%d"
+      RPS1="${${KEYMAP/vicmd/$VIM_NORMAL}/(main|viins)/$VIM_INSERT}"
+      RPS2=$RPS1
+      zle reset-prompt
+  }
+  zle -N zle-line-init
+  zle -N zle-keymap-select
+
+  # jjでインサートモード -> ノーマルモード
+  bindkey -M viins 'jj' vi-cmd-mode
+
+  # 一部のemacsキーバインドを模倣
+  bindkey -M viins '^S'  history-incremental-pattern-search-forward
+  bindkey -M viins '^R'  history-incremental-pattern-search-backward
+  bindkey -M viins '^A'  beginning-of-line
+  bindkey -M viins '^E'  end-of-line
+  bindkey -M viins '^U'  backward-kill-line
+  bindkey -M viins '^W'  backward-kill-word
+else
+  ##############
+  # emacsキーバインド
+  ##############
+  bindkey -e
+fi
 #########################################
 # 各種Option
 #########################################
@@ -118,6 +151,7 @@ alias gcma='git commit --amend'
 alias gd='git diff'
 alias gg='git status'
 alias gl='git log --stat'
+alias gm='git merge --no-ff'
 alias gp='git pull'
 alias gs='git show'
 
