@@ -5,7 +5,7 @@
 autoload -Uz colors && colors
 
 # プロンプト表示方法
-PROMPT="%(?.%F{107}.%F{202})[%n@%C] %f"
+COMMON_PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})[%n@%C] "
 RPROMPT='%F{208}%d'
 
 # キーバインド("vi" or "emacs")
@@ -16,20 +16,40 @@ if [ "${KEY_BIND}" = "vi" ]; then
   # viキーバインド
   ##############
   bindkey -v
+  PROMPT=$COMMON_PROMPT
 
   # viのモードをプロンプトに表示する
-  function zle-line-init zle-keymap-select {
-      VIM_NORMAL="%F{081}[NORMAL] %F{208}%d"
-      VIM_INSERT="%F{184}[INSERT] %F{208}%d"
-      RPS1="${${KEYMAP/vicmd/$VIM_NORMAL}/(main|viins)/$VIM_INSERT}"
-      RPS2=$RPS1
+  autoload -Uz add-zsh-hook
+  autoload -Uz terminfo
+
+  terminfo_down_sc=$terminfo[cud1]$terminfo[cuu1]$terminfo[sc]$terminfo[cud1]
+  left_down_prompt_preexec() {
+      print -rn -- $terminfo[el]
+  }
+  add-zsh-hook preexec left_down_prompt_preexec
+
+  function zle-keymap-select zle-line-init zle-line-finish
+  {
+      case $KEYMAP in
+          main|viins)
+              PROMPT_2="$fg[cyan]-- INSERT --$reset_color"
+              ;;
+          vicmd)
+              PROMPT_2="$fg[yellow]-- NORMAL --$reset_color"
+              ;;
+      esac
+
+      PROMPT="%{$terminfo_down_sc$PROMPT_2$terminfo[rc]%}$COMMON_PROMPT%{${reset_color}%}"
       zle reset-prompt
   }
   zle -N zle-line-init
+  zle -N zle-line-finish
   zle -N zle-keymap-select
+  zle -N edit-command-line
 
   # jjでインサートモード -> ノーマルモード
-  bindkey -M viins 'jj' vi-cmd-mode
+  # --> メニュー補完の'j'と干渉するので封印。
+  #bindkey -M viins 'jj' vi-cmd-mode
 
   # 一部のemacsキーバインドを模倣
   bindkey -M viins '^S'  history-incremental-pattern-search-forward
@@ -43,6 +63,7 @@ else
   # emacsキーバインド
   ##############
   bindkey -e
+  PROMPT=$COMMON_PROMPT
 fi
 #########################################
 # 各種Option
