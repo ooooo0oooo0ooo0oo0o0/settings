@@ -5,7 +5,7 @@
 autoload -Uz colors && colors
 
 # プロンプト表示方法
-COMMON_PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})[%n@%C] "
+COMMON_PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})[%n@%C] %f"
 RPROMPT='%F{208}%d'
 
 # キーバインド("vi" or "emacs")
