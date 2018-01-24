@@ -5,8 +5,8 @@
 autoload -Uz colors && colors
 
 # プロンプト表示方法
-COMMON_PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})[%n@%C] %f"
-RPROMPT='%F{208}%d'
+COMMON_PROMPT=$'%(?.%{\e[38;5;076m%}.%{\e[38;5;009m%})[%n@%C] %{\e[0m%}'
+RPROMPT=$'%{\e[38;5;222m%}%d%{\e[0m%}'
 
 # キーバインド("vi" or "emacs")
 KEY_BIND="vi"
@@ -32,14 +32,14 @@ if [ "${KEY_BIND}" = "vi" ]; then
   {
       case $KEYMAP in
           main|viins)
-              PROMPT_2="$fg[cyan]-- INSERT --$reset_color"
+              PROMPT_2=$'%{\e[38;05;080m%}-- INSERT --%{\e[0m%}'
               ;;
           vicmd)
-              PROMPT_2="$fg[yellow]-- NORMAL --$reset_color"
+              PROMPT_2=$'%{\e[38;05;220m%}-- NORMAL --%{\e[0m%}'
               ;;
       esac
 
-      PROMPT="%{$terminfo_down_sc$PROMPT_2$terminfo[rc]%}$COMMON_PROMPT%{${reset_color}%}"
+      PROMPT="%{$terminfo_down_sc$PROMPT_2$terminfo[rc]%}$COMMON_PROMPT"
       zle reset-prompt
   }
   zle -N zle-line-init
@@ -161,6 +161,7 @@ alias l='ls -lsa'
 alias v=vim
 alias vi=vim
 alias vz='vim ~/.zshrc'
+alias vv='vim ~/.vimrc'
 alias ...='cd ../..'
 
 # git関連
