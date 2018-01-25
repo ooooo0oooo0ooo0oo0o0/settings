@@ -16,9 +16,8 @@ if [ "${KEY_BIND}" = "vi" ]; then
   # viキーバインド
   ##############
   bindkey -v
-  PROMPT=$COMMON_PROMPT
 
-  # viのモードをプロンプトに表示する
+  #### 以下、viのモードをプロンプトに表示する為のあれこれ
   autoload -Uz add-zsh-hook
   autoload -Uz terminfo
 
@@ -28,14 +27,21 @@ if [ "${KEY_BIND}" = "vi" ]; then
   }
   add-zsh-hook preexec left_down_prompt_preexec
 
+  INSERT_TXT=$'%{\e[38;05;080m%}-- INSERT --%{\e[0m%}'
+  NORMAL_TXT=$'%{\e[38;05;220m%}-- NORMAL --%{\e[0m%}'
+
+  # 初回表示用プロンプト(insertモード)
+  PROMPT="%{$terminfo_down_sc$INSERT_TXT$terminfo[rc]%}$COMMON_PROMPT"
+
+  # モード切り替え毎にプロンプト表示を切り替える
   function zle-keymap-select zle-line-init zle-line-finish
   {
       case $KEYMAP in
           main|viins)
-              PROMPT_2=$'%{\e[38;05;080m%}-- INSERT --%{\e[0m%}'
+              PROMPT_2=$INSERT_TXT
               ;;
           vicmd)
-              PROMPT_2=$'%{\e[38;05;220m%}-- NORMAL --%{\e[0m%}'
+              PROMPT_2=$NORMAL_TXT
               ;;
       esac
 
