@@ -5,3 +5,10 @@
 repo = 'cespare/vim-toml'
 on_ft = 'toml'
 
+##############################
+## plantuml用シンタックス
+##############################
+[[plugins]]
+repo = 'aklt/plantuml-syntax'
+on_ft = 'plantuml'
+

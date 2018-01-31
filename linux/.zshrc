@@ -9,67 +9,67 @@ COMMON_PROMPT=$'%(?.%{\e[38;5;076m%}.%{\e[38;5;009m%})[%n@%C] %{\e[0m%}'
 RPROMPT=$'%{\e[38;5;222m%}%d%{\e[0m%}'
 
 # キーバインド("vi" or "emacs")
-KEY_BIND="vi"
+ZSH_KEY_BIND="vi"
 
-if [ "${KEY_BIND}" = "vi" ]; then
-  ##############
-  # viキーバインド
-  ##############
-  bindkey -v
+if [ "${ZSH_KEY_BIND}" = "vi" ]; then
+    ##############
+    # viキーバインド
+    ##############
+    bindkey -v
 
-  #### 以下、viのモードをプロンプトに表示する為のあれこれ
-  autoload -Uz add-zsh-hook
-  autoload -Uz terminfo
+    #### 以下、viのモードをプロンプトに表示する為のあれこれ
+    autoload -Uz add-zsh-hook
+    autoload -Uz terminfo
 
-  terminfo_down_sc=$terminfo[cud1]$terminfo[cuu1]$terminfo[sc]$terminfo[cud1]
-  left_down_prompt_preexec() {
-      print -rn -- $terminfo[el]
-  }
-  add-zsh-hook preexec left_down_prompt_preexec
+    terminfo_down_sc=$terminfo[cud1]$terminfo[cuu1]$terminfo[sc]$terminfo[cud1]
+    left_down_prompt_preexec() {
+        print -rn -- $terminfo[el]
+    }
+    add-zsh-hook preexec left_down_prompt_preexec
 
-  INSERT_TXT=$'%{\e[38;05;080m%}-- INSERT --%{\e[0m%}'
-  NORMAL_TXT=$'%{\e[38;05;220m%}-- NORMAL --%{\e[0m%}'
+    INSERT_TXT=$'%{\e[38;05;080m%}-- INSERT --%{\e[0m%}'
+    NORMAL_TXT=$'%{\e[38;05;220m%}-- NORMAL --%{\e[0m%}'
 
-  # 初回表示用プロンプト(insertモード)
-  PROMPT="%{$terminfo_down_sc$INSERT_TXT$terminfo[rc]%}$COMMON_PROMPT"
+    # 初回表示用プロンプト(insertモード)
+    PROMPT="%{$terminfo_down_sc$INSERT_TXT$terminfo[rc]%}$COMMON_PROMPT"
 
-  # モード切り替え毎にプロンプト表示を切り替える
-  function zle-keymap-select zle-line-init zle-line-finish
-  {
-      case $KEYMAP in
-          main|viins)
-              PROMPT_2=$INSERT_TXT
-              ;;
-          vicmd)
-              PROMPT_2=$NORMAL_TXT
-              ;;
-      esac
+    # モード切り替え毎にプロンプト表示を切り替える
+    function zle-keymap-select zle-line-init zle-line-finish
+    {
+        case $KEYMAP in
+            main|viins)
+                PROMPT_2=$INSERT_TXT
+                ;;
+            vicmd)
+                PROMPT_2=$NORMAL_TXT
+                ;;
+        esac
 
-      PROMPT="%{$terminfo_down_sc$PROMPT_2$terminfo[rc]%}$COMMON_PROMPT"
-      zle reset-prompt
-  }
-  zle -N zle-line-init
-  zle -N zle-line-finish
-  zle -N zle-keymap-select
-  zle -N edit-command-line
+        PROMPT="%{$terminfo_down_sc$PROMPT_2$terminfo[rc]%}$COMMON_PROMPT"
+        zle reset-prompt
+    }
+    zle -N zle-line-init
+    zle -N zle-line-finish
+    zle -N zle-keymap-select
+    zle -N edit-command-line
 
-  # jjでインサートモード -> ノーマルモード
-  # --> メニュー補完の'j'と干渉するので封印。
-  #bindkey -M viins 'jj' vi-cmd-mode
+    # jjでインサートモード -> ノーマルモード
+    # --> メニュー補完の'j'と干渉するので封印。
+    #bindkey -M viins 'jj' vi-cmd-mode
 
-  # 一部のemacsキーバインドを模倣
-  bindkey -M viins '^S'  history-incremental-pattern-search-forward
-  bindkey -M viins '^R'  history-incremental-pattern-search-backward
-  bindkey -M viins '^A'  beginning-of-line
-  bindkey -M viins '^E'  end-of-line
-  bindkey -M viins '^U'  backward-kill-line
-  bindkey -M viins '^W'  backward-kill-word
+    # 一部のemacsキーバインドを模倣
+    bindkey -M viins '^S'  history-incremental-pattern-search-forward
+    bindkey -M viins '^R'  history-incremental-pattern-search-backward
+    bindkey -M viins '^A'  beginning-of-line
+    bindkey -M viins '^E'  end-of-line
+    bindkey -M viins '^U'  backward-kill-line
+    bindkey -M viins '^W'  backward-kill-word
 else
-  ##############
-  # emacsキーバインド
-  ##############
-  bindkey -e
-  PROMPT=$COMMON_PROMPT
+    ##############
+    # emacsキーバインド
+    ##############
+    bindkey -e
+    PROMPT=$COMMON_PROMPT
 fi
 #########################################
 # 各種Option
@@ -127,12 +127,12 @@ zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
 # gitの補完を高速化
 GIT_VERSION=$(git --version | sed -e "s/git version //" | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}')
 if [ $GIT_VERSION -ge 10801 ]; then
-  # version 1.8.1以降は"git-completion.zsh"の利用が可能
-  zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
+    # version 1.8.1以降は"git-completion.zsh"の利用が可能
+    zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
 else
-  # やっつけで、ver1.7.1から抜いた"git-completion.bash"を利用
-  autoload -Uz bashcompinit && bashcompinit
-  source ~/.git-completion.bash
+    # やっつけで、ver1.7.1から抜いた"git-completion.bash"を利用
+    autoload -Uz bashcompinit && bashcompinit
+    source ~/.git-completion.bash
 fi
 
 #########################################
@@ -189,5 +189,5 @@ alias gs='git show'
 # .zshrc更新時に自動compile。
 # 尚、最初に"zcompile ~/.zshrc"を一度実行しておかないと動作しない。
 if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
-   zcompile ~/.zshrc
+    zcompile ~/.zshrc
 fi
