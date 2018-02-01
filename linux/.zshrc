@@ -53,10 +53,6 @@ if [ "${ZSH_KEY_BIND}" = "vi" ]; then
     zle -N zle-keymap-select
     zle -N edit-command-line
 
-    # jjでインサートモード -> ノーマルモード
-    # --> メニュー補完の'j'と干渉するので封印。
-    #bindkey -M viins 'jj' vi-cmd-mode
-
     # 一部のemacsキーバインドを模倣
     bindkey -M viins '^S'  history-incremental-pattern-search-forward
     bindkey -M viins '^R'  history-incremental-pattern-search-backward
@@ -76,24 +72,18 @@ fi
 #########################################
 # ctrl+d でのlogout抑制
 setopt ignoreeof
-
 # ctrl+s or q によるフロー制御を抑止
 setopt no_flow_control
-
 # 日本語ファイルを表示可能にする
 setopt print_eight_bit
-
 # beep無効化
 setopt no_beep
-
 # ディレクトリ名だけでcdする
 setopt auto_cd
-
 # cdしたら自動でpushd(重複は抑制する)
 setopt auto_pushd
 setopt pushd_ignore_dups
 DIRSTACKSIZE=100
-
 # コマンドラインにて#以降をコメントと見做す
 setopt interactive_comments
 
@@ -102,13 +92,10 @@ setopt interactive_comments
 #########################################
 # 補完機能を有効化
 autoload -Uz compinit && compinit
-
 # 補完候補が複数の場合に一覧表示
 setopt auto_menu
-
 # "="以降も補完
 setopt magic_equal_subst
-
 # メニュー補完設定
 zmodload zsh/complist
 zstyle ':completion:*' menu select=2
@@ -130,7 +117,7 @@ if [ $GIT_VERSION -ge 10801 ]; then
     # version 1.8.1以降は"git-completion.zsh"の利用が可能
     zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
 else
-    # やっつけで、ver1.7.1から抜いた"git-completion.bash"を利用
+    # ver1.7.1から抜いた"git-completion.bash"を利用
     autoload -Uz bashcompinit && bashcompinit
     source ~/.git-completion.bash
 fi
@@ -146,16 +133,12 @@ SAVEHIST=10000
 # 同じコマンドをhistoryに残さない
 setopt hist_ignore_all_dups
 setopt hist_save_nodups
-
 # historyコマンドを履歴に残さない
 setopt hist_no_store
-
 # history保存時の余計なスペース削除
 setopt hist_reduce_blanks
-
 # スペースから始まるコマンドはhistoryに残さない
 setopt hist_ignore_space
-
 # 同時起動中のzsh間でhistoryを共有
 setopt share_history
 

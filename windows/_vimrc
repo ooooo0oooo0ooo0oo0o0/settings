@@ -58,7 +58,18 @@ set cmdheight=2
 " エディタウィンドウの末尾から2行目にステータスラインを常時表示させる
 set laststatus=2
 " ステータス行に表示させる情報
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+set statusline=%<%f\         " ファイルパス
+set statusline+=%m           " 変更有無表示 ([+]<-こんなやつ)
+set statusline+=%r           " 読み込み専用かどうかを表示
+set statusline+=%h           " ヘルプページの場合はその旨表示
+set statusline+=%w           " プレビューウィンドウの場合はその旨表示
+set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'} " エンコード
+set statusline+=%=           " 以降がステータス行の右側の表示設定
+set statusline+=[%l/%LL:%v]  " 行/列番号
+if (dein#check_install('vim-fugitive') == 0)
+    " 現在のgitブランチを表示
+    set statusline+=%{fugitive#statusline()}
+endif
 " 入力中のコマンドを表示する
 set showcmd
 " インクリメンタルサーチ有効
@@ -66,6 +77,14 @@ set incsearch
 " tab文字等を可視化
 set list
 set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
+" コマンド,検索パターンの履歴の最大数
+set history=100
+" 自動改行を抑止
+set textwidth=0
+" helpでハマる問題への対応
+set notagbsearch
+" file pathの区切り文字を\ではなく/にする(Windows向け)
+set shellslash
 " 各種文字コード
 set encoding=utf-8
 set fenc=utf-8
@@ -76,11 +95,6 @@ set fileformats=unix,dos,mac
 au BufNewFile,BufRead *.c,*.h,*.cpp,*.hpp set tags=./tag_cxx.tags;
 au BufNewFile,BufRead *.php set tags=./tag_php.tags;
 
-" helpでハマる問題への対応
-set notagbsearch
-" file pathの区切り文字を\ではなく/にする(Windows向け)
-set shellslash
-
 " 保存時に末尾の空白を削除
 autocmd BufWritePre * :%s/\s\+$//ge
 
@@ -88,11 +102,6 @@ autocmd BufWritePre * :%s/\s\+$//ge
 set grepprg=grep\ -rnIH\ --exclude-dir=.svn\ --exclude-dir=.git
 autocmd QuickfixCmdPost vimgrep copen
 autocmd QuickfixCmdPost grep copen
-
-" ステータス行に現在のgitブランチを表示(fugitiveが存在する場合のみ)
-if (dein#check_install('vim-fugitive') == 0)
-  set statusline+=%{fugitive#statusline()}
-endif
 
 " Unite関連
 if (dein#check_install('unite.vim') == 0)
@@ -164,7 +173,7 @@ if (dein#check_install('unite.vim') == 0)
     nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
     nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
     nnoremap <silent> ,um :<C-u>Unite file_mru buffer<CR>
-    nnoremap <silent> ,up  :<C-u>Unite file_rec/async:!<CR>
+    nnoremap <silent> ,up :<C-u>Unite file_rec/async:!<CR>
 endif
 
 "--------------------------

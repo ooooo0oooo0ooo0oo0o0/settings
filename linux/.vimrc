@@ -57,7 +57,18 @@ set cmdheight=2
 " エディタウィンドウの末尾から2行目にステータスラインを常時表示させる
 set laststatus=2
 " ステータス行に表示させる情報
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+set statusline=%<%f\         " ファイルパス
+set statusline+=%m           " 変更有無表示 ([+]<-こんなやつ)
+set statusline+=%r           " 読み込み専用かどうかを表示
+set statusline+=%h           " ヘルプページの場合はその旨表示
+set statusline+=%w           " プレビューウィンドウの場合はその旨表示
+set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'} " エンコード
+set statusline+=%=           " 以降がステータス行の右側の表示設定
+set statusline+=[%l/%LL:%v]  " 行/列番号
+if (dein#check_install('tpope/vim-fugitive') == 0)
+    " 現在のgitブランチを表示
+    set statusline+=%{fugitive#statusline()}
+endif
 " 入力中のコマンドを表示する
 set showcmd
 " インクリメンタルサーチ有効
@@ -65,16 +76,18 @@ set incsearch
 " tab文字等を可視化
 set list
 set listchars=tab:≫-,trail:-,extends:≫,precedes:≪,nbsp:%
+" コマンド,検索パターンの履歴の最大数
+set history=100
+" 自動改行を抑止
+set textwidth=0
+" helpでハマる問題の対処
+set notagbsearch
+" helpの言語
+set helplang=ja,en
 
 " tag読み込み
 au BufNewFile,BufRead *.c,*.h,*.cpp,*.hpp set tags=./tag_cxx.tags;
 au BufNewFile,BufRead *.php set tags=./tag_php.tags;
-
-" helpでハマる問題の対処
-set notagbsearch
-
-" helpの言語
-set helplang=ja,en
 
 " 保存時に末尾の空白を削除
 autocmd BufWritePre * :%s/\s\+$//ge
@@ -83,11 +96,6 @@ autocmd BufWritePre * :%s/\s\+$//ge
 set grepprg=grep\ -rnIH\ --exclude-dir=.svn\ --exclude-dir=.git
 autocmd QuickfixCmdPost vimgrep copen
 autocmd QuickfixCmdPost grep copen
-
-" ステータス行に現在のgitブランチを表示(fugitiveが存在する場合のみ)
-if (dein#check_install('tpope/vim-fugitive') == 0)
-    set statusline+=%{fugitive#statusline()}
-endif
 
 " Unite関連
 if (dein#check_install('Shougo/unite.vim') == 0)
