@@ -65,7 +65,7 @@ set statusline+=%w           " プレビューウィンドウの場合はその�
 set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'} " エンコード
 set statusline+=%=           " 以降がステータス行の右側の表示設定
 set statusline+=[%l/%LL:%v]  " 行/列番号
-if (dein#check_install('tpope/vim-fugitive') == 0)
+if (dein#check_install('vim-fugitive') == 0)
     " 現在のgitブランチを表示
     set statusline+=%{fugitive#statusline()}
 endif
@@ -98,7 +98,7 @@ autocmd QuickfixCmdPost vimgrep copen
 autocmd QuickfixCmdPost grep copen
 
 " Unite関連
-if (dein#check_install('Shougo/unite.vim') == 0)
+if (dein#check_install('unite.vim') == 0)
     let g:unite_enable_start_insert=1
     let g:unite_source_history_yank_enable =1
     let g:unite_source_file_mru_limit = 200
@@ -109,7 +109,7 @@ endif
 "==============================
 " color scheme
 "==============================
-if (dein#check_install('tomasr/molokai') == 0)
+if (dein#check_install('molokai') == 0)
     set t_Co=256
     colorscheme molokai
     let g:molokai_original = 1
@@ -124,6 +124,9 @@ endif
 "--------------------------
 " Normal Mode
 "--------------------------
+" .vimrcのreload
+nnoremap <Space>s :source ~/.vimrc<CR>
+
 " PPでyankレジスタ先頭の内容を貼り付け
 nnoremap PP "0p
 
@@ -147,8 +150,8 @@ nnoremap tt :tab sp<CR> :exe("tjump ".expand('<cword>'))<CR>
 nnoremap tl :ts<CR>
 
 " tab移動(左右)
-nnoremap <silent> <space>l gt
-nnoremap <silent> <space>h gT
+nnoremap <silent> <Space>l gt
+nnoremap <silent> <Space>h gT
 
 " 文字列置換用
 nnoremap <expr> <Space>r ':%s/' . expand('<cword>') . '/**/gc'
@@ -166,17 +169,17 @@ nnoremap <Space>d 0v$hx
 nnoremap <Space>y 0v$hy
 
 " grep関連
-nnoremap <expr> <Space>g ':vimgrep /\<' . expand('<cword>') . '\>/j **/*.' . expand('%:e')
-nnoremap <expr> <Space>G ':sil grep! ' . expand('<cword>') . ' *'
+nnoremap <expr> <Space>g ':vimgrep /\<'.expand('<cword>').'\>/j **/*.'.expand('%:e')
+nnoremap <expr> <Space>G ':sil grep! '.expand('<cword>').' *'
 
 " Unite関連
-if (dein#check_install('Shougo/unite.vim') == 0)
+if (dein#check_install('unite.vim') == 0)
     " outline解析表示
-    nnoremap <silent> <space>o :<C-u>Unite -vertical -winwidth=50 outline<CR><ESC>
+    nnoremap <silent> <Space>o :<C-u>Unite -vertical -winwidth=50 outline<CR><ESC>
     " 他、諸々のUnite関連キーバインド
     nnoremap <silent> ,uy :<C-u>Unite history/yank<CR><ESC>
     nnoremap <silent> ,ub :<C-u>Unite buffer<CR><ESC>
-    nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR><ESC>
+    nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file file/new<CR><ESC>
     nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR><ESC>
     nnoremap <silent> ,um :<C-u>Unite file_mru buffer<CR><ESC>
     nnoremap <silent> ,up :<C-u>Unite file_rec/async:!<CR><ESC>
