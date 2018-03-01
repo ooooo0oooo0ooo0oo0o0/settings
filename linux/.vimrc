@@ -97,6 +97,14 @@ set grepprg=grep\ -rnIH\ --exclude-dir=.svn\ --exclude-dir=.git
 autocmd QuickfixCmdPost vimgrep copen
 autocmd QuickfixCmdPost grep copen
 
+" 全角spaceの色設定
+if (dein#check_install('vim-zenspace') == 0)
+    augroup vimrc-highlight
+      autocmd!
+      autocmd ColorScheme * highlight ZenSpace ctermbg=darkgray guibg=darkgray
+    augroup END
+endif
+
 " Unite関連
 if (dein#check_install('unite.vim') == 0)
     let g:unite_enable_start_insert=1

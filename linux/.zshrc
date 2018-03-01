@@ -147,7 +147,7 @@ setopt share_history
 # 各種Alias
 #########################################
 # 基本alias
-alias l='ls -lsa'
+alias l='ls -lsa --color=auto'
 alias v=vim
 alias vi=vim
 alias vz='vim ~/.zshrc'
@@ -165,6 +165,7 @@ alias gg='git status'
 alias gl='git log --stat'
 alias gm='git merge --no-ff'
 alias gp='git pull'
+alias gr='git reset --hard HEAD'
 alias gs='git show'
 
 #########################################
