@@ -80,6 +80,8 @@ set listchars=tab:≫-,trail:-,extends:≫,precedes:≪,nbsp:%
 set history=100
 " 自動改行を抑止
 set textwidth=0
+" <>も対応括弧対象にする
+set matchpairs& matchpairs+=<:>
 " helpでハマる問題の対処
 set notagbsearch
 " helpの言語
@@ -112,6 +114,45 @@ if (dein#check_install('unite.vim') == 0)
     let g:unite_source_file_mru_limit = 200
     " file_mruの表示フォーマットを空にすると表示スピードが高速化される(らしい)
     let g:unite_source_file_mru_filename_format = ''
+endif
+
+" neocomplcache関連
+if (dein#check_install('neocomplcache.vim') == 0)
+    " 補完を有効化
+    let g:neocomplcache_enable_at_startup = 1
+    " AutoComplPopを封印
+    let g:acp_enableAtStartup = 0
+    " 大文字小文字を無視
+    let g:neocomplcache_enable_smart_case = 1
+    " "_"区切りの補完を有効化
+    let g:neocomplcache_enable_underbar_completion = 1
+    " シンタックスをキャッシュする際の最小文字数
+    let g:neocomplcache_min_syntax_length = 3
+    " 補完を自動的にlockするbuffer名のパターン
+    let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+    " ファイルタイプ毎のdictionary
+    let g:neocomplcache_dictionary_filetype_lists = {
+        \ 'default' : ''
+        \ }
+
+    " neosnippet関連
+    if (dein#check_install('neosnippet.vim') == 0)
+        " 一部のfile typeに対して独自snippetを使う(他はsnippet-snippets任せ)
+        let g:neosnippet#snippets_directory = '~/.vim/snippets'
+        let g:neosnippet#disable_runtime_snippets = {
+            \ 'c'  : 1,
+            \ 'cpp': 1,
+        \}
+
+        " Tab押下で次の入力位置にジャンプ
+        smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+        if has('conceal')
+        set conceallevel=2 concealcursor=niv
+        endif
+    endif
 endif
 
 "==============================
@@ -202,6 +243,36 @@ inoremap <silent> jj <ESC>
 " 閉じ括弧の自動補完
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
+
+" neocomplcache関連
+if (dein#check_install('neocomplcache.vim') == 0)
+    " 補完を無かったことにする
+    inoremap <expr><C-g> neocomplcache#undo_completion()
+    " 補完候補から、共通する箇所を補完(シェル補完みたいなやつ)
+    inoremap <expr><C-l> neocomplcache#complete_common_string()
+
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function()
+      return neocomplcache#smart_close_popup() . "\<CR>"
+    endfunction
+    " TABキーで補完候補選択
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    " Popupを閉じる
+    inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+    " 候補確定
+    inoremap <expr><C-y>  neocomplcache#close_popup()
+    " 候補をキャンセルし、Popupを閉じる
+    inoremap <expr><C-e>  neocomplcache#cancel_popup()
+
+    " neosnippet関連
+    if (dein#check_install('neosnippet.vim') == 0)
+        " snippet候補を展開(マーカーのjump等にも使う)
+        imap <C-k> <Plug>(neosnippet_expand_or_jump)
+        smap <C-k> <Plug>(neosnippet_expand_or_jump)
+        xmap <C-k> <Plug>(neosnippet_expand_target)
+    endif
+endif
 
 "--------------------------
 " Command Mode

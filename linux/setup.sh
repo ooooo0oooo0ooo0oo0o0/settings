@@ -23,14 +23,14 @@ for dotfile in .?*; do
 done
 
 #########################################
-# vim plugin用tomlファイルのlink作成
+# vim plugin用各種ファイルのlink作成
 #########################################
-TOML_DIR=$HOME/.vim/dein_toml
-mkdir -p $TOML_DIR
-cd ../common/dein_toml
-for toml_file in `\find . -maxdepth 1 -type f`; do
-    ln -Fis "$PWD/$toml_file" $TOML_DIR/$toml_file
+VIM_DIR=$HOME/.vim
+cd ../common
+for vim_file in `\find . -maxdepth 1 -type d`; do
+    ln -Fis $PWD/$vim_file $VIM_DIR/$vim_file
 done
+cd $(dirname $0)
 
 #########################################
 # git versionに応じた各処理

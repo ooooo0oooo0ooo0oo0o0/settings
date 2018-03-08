@@ -39,6 +39,20 @@ repo = 'airblade/vim-gitgutter'
 repo = 'tpope/vim-fugitive'
 
 ##############################
+## 補完系plugin
+##############################
+[[plugins]]
+repo = 'Shougo/neocomplcache.vim'
+
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+depends = ['neocomplcache.vim']
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+depends = ['neosnippet.vim']
+
+##############################
 ## 他
 ##############################
 [[plugins]]
