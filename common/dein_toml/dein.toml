@@ -41,12 +41,19 @@ repo = 'tpope/vim-fugitive'
 ##############################
 ## 補完系plugin
 ##############################
+# vimがluaに対応しているかどうかで何を使うかを決める
+# lua非対応 : neocomplcache
+# lua対応   : neocomplete
 [[plugins]]
 repo = 'Shougo/neocomplcache.vim'
+if   = '''! has('lua')'''
+
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+if   = ''' has('lua')'''
 
 [[plugins]]
 repo = 'Shougo/neosnippet.vim'
-depends = ['neocomplcache.vim']
 
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'

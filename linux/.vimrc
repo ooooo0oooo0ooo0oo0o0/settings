@@ -139,7 +139,7 @@ if ((!has('lua')) && (dein#check_install('neocomplcache.vim') == 0))
     let b:is_neocomplcache_configured = 1
 endif
 
-" neocomplete関連 (lua対応のvimのみ対象)
+" neocomplete関連 (lua対応vimはこっち)
 if ((has('lua')) && (dein#check_install('neocomplete.vim') == 0))
     " AutoComplPopを封印
     let g:acp_enableAtStartup = 0
