@@ -116,8 +116,8 @@ if (dein#check_install('unite.vim') == 0)
     let g:unite_source_file_mru_filename_format = ''
 endif
 
-" neocomplcache関連
-if (dein#check_install('neocomplcache.vim') == 0)
+" neocomplcache関連 (lua非対応のvimのみ対象)
+if ((!has('lua')) && (dein#check_install('neocomplcache.vim') == 0))
     " 補完を有効化
     let g:neocomplcache_enable_at_startup = 1
     " AutoComplPopを封印
@@ -136,7 +136,38 @@ if (dein#check_install('neocomplcache.vim') == 0)
         \ 'default' : ''
         \ }
 
-    " neosnippet関連
+    let b:is_neocomplcache_configured = 1
+endif
+
+" neocomplete関連 (lua対応のvimのみ対象)
+if ((has('lua')) && (dein#check_install('neocomplete.vim') == 0))
+    " AutoComplPopを封印
+    let g:acp_enableAtStartup = 0
+    " 補完を有効化
+    let g:neocomplete#enable_at_startup = 1
+    " 大文字小文字を無視
+    let g:neocomplete#enable_smart_case = 1
+    " シンタックスをキャッシュする際の最小文字数
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+    " ファイルタイプ毎のdictionary
+    let g:neocomplete#sources#dictionary#dictionaries = {
+        \ 'default' : '',
+        \ 'vimshell' : $HOME.'/.vimshell_hist',
+        \ 'scheme' : $HOME.'/.gosh_completions'
+            \ }
+
+    " Define keyword.
+    if !exists('g:neocomplete#keyword_patterns')
+        let g:neocomplete#keyword_patterns = {}
+    endif
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+    let b:is_neocomplete_configured = 1
+endif
+
+" neosnippet関連設定
+if (exists('b:is_neocomplcache_configured') || exists('b:is_neocomplete_configured'))
     if (dein#check_install('neosnippet.vim') == 0)
         " 一部のfile typeに対して独自snippetを使う(他はsnippet-snippets任せ)
         let g:neosnippet#snippets_directory = '~/.vim/snippets'
@@ -150,7 +181,7 @@ if (dein#check_install('neocomplcache.vim') == 0)
         \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
         if has('conceal')
-        set conceallevel=2 concealcursor=niv
+            set conceallevel=2 concealcursor=niv
         endif
     endif
 endif
@@ -245,7 +276,7 @@ inoremap {<Enter> {}<Left><CR><ESC><S-o>
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
 
 " neocomplcache関連
-if (dein#check_install('neocomplcache.vim') == 0)
+if exists('b:is_neocomplcache_configured')
     " 補完を無かったことにする
     inoremap <expr><C-g> neocomplcache#undo_completion()
     " 補完候補から、共通する箇所を補完(シェル補完みたいなやつ)
@@ -264,8 +295,29 @@ if (dein#check_install('neocomplcache.vim') == 0)
     inoremap <expr><C-y>  neocomplcache#close_popup()
     " 候補をキャンセルし、Popupを閉じる
     inoremap <expr><C-e>  neocomplcache#cancel_popup()
+endif
 
-    " neosnippet関連
+" neocomplete関連
+if exists('b:is_neocomplete_configured')
+    " 補完を無かったことにする
+    inoremap <expr><C-g>     neocomplete#undo_completion()
+    " 補完候補から、共通する箇所を補完(シェル補完みたいなやつ)
+    inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function()
+      return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    endfunction
+    " TABキーで補完候補選択
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    " Popupを閉じる
+    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+endif
+
+" neosnippet関連設定
+if (exists('b:is_neocomplcache_configured') || exists('b:is_neocomplete_configured'))
     if (dein#check_install('neosnippet.vim') == 0)
         " snippet候補を展開(マーカーのjump等にも使う)
         imap <C-k> <Plug>(neosnippet_expand_or_jump)
