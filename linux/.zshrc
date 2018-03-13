@@ -53,9 +53,9 @@ if [ "${ZSH_KEY_BIND}" = "vi" ]; then
     zle -N zle-keymap-select
     zle -N edit-command-line
 
-    # 一部のemacsキーバインドを模倣
-    bindkey -M viins '^S'  history-incremental-pattern-search-forward
-    bindkey -M viins '^R'  history-incremental-pattern-search-backward
+    # 一部のemacsキーバインドを模倣 (incremental searchはfzfに委ねる)
+    #bindkey -M viins '^S'  history-incremental-pattern-search-forward
+    #bindkey -M viins '^R'  history-incremental-pattern-search-backward
     bindkey -M viins '^A'  beginning-of-line
     bindkey -M viins '^E'  end-of-line
     bindkey -M viins '^U'  backward-kill-line
@@ -176,3 +176,20 @@ alias gs='git show'
 if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
     zcompile ~/.zshrc
 fi
+
+# fzf初期化
+if [ -e ~/.fzf/bin/fzf ]; then
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+else
+    # 未install時は、installした後にもう一度zshrcを読み込む
+    git clone https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+fi
+
+# fzf版history search
+function select-history() {
+  BUFFER=$(history -n -r 1 | fzf --no-sort +m --query "$LBUFFER" --prompt="History > ")
+  CURSOR=$#BUFFER
+}
+zle -N select-history
+bindkey '^r' select-history
