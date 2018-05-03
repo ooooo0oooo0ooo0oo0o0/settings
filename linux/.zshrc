@@ -148,6 +148,7 @@ setopt share_history
 #########################################
 # 基本alias
 alias l='ls -lsa --color=auto'
+alias tree='pwd;find . | sort | sed '\''1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'\'''
 alias v=vim
 alias vi=vim
 alias vz='vim ~/.zshrc'

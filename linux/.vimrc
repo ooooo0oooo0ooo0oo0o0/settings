@@ -86,6 +86,11 @@ set matchpairs& matchpairs+=<:>
 set notagbsearch
 " helpの言語
 set helplang=ja,en
+" 各種文字コード
+set encoding=utf-8
+set fenc=utf-8
+set fileencoding=utf-8
+set fileformats=unix,dos,mac
 
 " tag読み込み
 au BufNewFile,BufRead *.c,*.h,*.cpp,*.hpp set tags=./tag_cxx.tags;

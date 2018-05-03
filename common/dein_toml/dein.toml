@@ -67,10 +67,6 @@ depends = ['neosnippet.vim']
 repo = 'tomasr/molokai'
 
 [[plugins]]
-# 日本語Document
-repo = 'vim-jp/vimdoc-ja'
-
-[[plugins]]
 # 全角スペースを表示
 repo = 'thinca/vim-zenspace'
 
