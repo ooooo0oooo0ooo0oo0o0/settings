@@ -194,13 +194,35 @@ endif
 "==============================
 " color scheme
 "==============================
-if (dein#check_install('molokai') == 0)
-    set t_Co=256
-    colorscheme molokai
-    let g:molokai_original = 1
-    let g:rehash256 = 1
-    set background=dark
-    syntax on
+" 選択可能なcolor scheme
+let scheme_list = {
+    \ '1' : 'molokai',
+    \ '2' : 'Alduin'
+\}
+
+" color schemeを変更したい場合はここを変える
+let color_scheme = scheme_list['2']
+
+if color_scheme ==# scheme_list['1']
+    " molokai
+    if (dein#check_install(color_scheme) == 0)
+        set t_Co=256
+        colorscheme molokai
+        let g:molokai_original = 1
+        let g:rehash256 = 1
+        set background=dark
+        syntax on
+    endif
+elseif color_scheme ==# scheme_list['2']
+    " Alduin
+    if (dein#check_install(color_scheme) == 0)
+        let g:alduin_Shout_Dragon_Aspect = 1
+        "let g:alduin_Shout_Become_Ethereal = 1
+        "let g:alduin_Shout_Fire_Breath = 1
+        colorscheme alduin
+        set t_Co=256
+        syntax on
+    endif
 endif
 
 "==============================

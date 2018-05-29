@@ -26,9 +26,10 @@ done
 # vim plugin用各種ファイルのlink作成
 #########################################
 VIM_DIR=$HOME/.vim
+mkdir -p $VIM_DIR
 cd ../common
 for vim_file in `\find . -maxdepth 1 -type d`; do
-    ln -Fis $PWD/$vim_file $VIM_DIR/$vim_file
+    ln -Fis $PWD/$vim_file $VIM_DIR/
 done
 cd $(dirname $0)
 
