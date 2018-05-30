@@ -197,11 +197,12 @@ endif
 " 選択可能なcolor scheme
 let scheme_list = {
     \ '1' : 'molokai',
-    \ '2' : 'Alduin'
+    \ '2' : 'Alduin',
+    \ '3' : 'moonshine-vim'
 \}
 
 " color schemeを変更したい場合はここを変える
-let color_scheme = scheme_list['2']
+let color_scheme = scheme_list['3']
 
 if color_scheme ==# scheme_list['1']
     " molokai
@@ -220,6 +221,20 @@ elseif color_scheme ==# scheme_list['2']
         "let g:alduin_Shout_Become_Ethereal = 1
         "let g:alduin_Shout_Fire_Breath = 1
         colorscheme alduin
+        set t_Co=256
+        syntax on
+    endif
+elseif color_scheme ==# scheme_list['3']
+    " moonshine-vim
+    if (dein#check_install(color_scheme) == 0)
+        colorscheme moonshine
+        "colorscheme moonshine_minimal
+        "colorscheme moonshine_lowcontrast
+
+        " 気になる色を変更
+        autocmd ColorScheme * highlight Todo ctermfg=222 ctermbg=238 guibg=Magenta
+        autocmd ColorScheme * highlight Visual ctermfg=239
+        autocmd ColorScheme * highlight ErrorMsg ctermbg=178
         set t_Co=256
         syntax on
     endif

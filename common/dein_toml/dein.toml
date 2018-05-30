@@ -71,6 +71,10 @@ repo = 'tomasr/molokai'
 repo = 'AlessandroYorba/Alduin'
 
 [[plugins]]
+# color scheme
+repo = 'KKPMW/moonshine-vim'
+
+[[plugins]]
 # 全角スペースを表示
 repo = 'thinca/vim-zenspace'
 
