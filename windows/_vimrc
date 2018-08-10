@@ -76,6 +76,8 @@ endif
 set showcmd
 " インクリメンタルサーチ有効
 set incsearch
+" highlightサーチ有効
+set hlsearch
 " tab文字等を可視化
 set list
 set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
@@ -309,7 +311,7 @@ if exists('b:is_neocomplete_configured')
     " Popupを閉じる
     inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
     inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+    inoremap <expr><Space> pumvisible() ? "\<C-y><Space>" : "\<Space>"
 endif
 
 " neosnippet関連設定

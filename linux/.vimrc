@@ -73,6 +73,8 @@ endif
 set showcmd
 " インクリメンタルサーチ有効
 set incsearch
+" highlightサーチ有効
+set hlsearch
 " tab文字等を可視化
 set list
 set listchars=tab:≫-,trail:-,extends:≫,precedes:≪,nbsp:%
@@ -207,11 +209,13 @@ let color_scheme = scheme_list['3']
 if color_scheme ==# scheme_list['1']
     " molokai
     if (dein#check_install(color_scheme) == 0)
-        set t_Co=256
         colorscheme molokai
         let g:molokai_original = 1
         let g:rehash256 = 1
         set background=dark
+
+        " 気になる色を変更
+        autocmd ColorScheme * highlight StatusLine ctermbg=023
         syntax on
     endif
 elseif color_scheme ==# scheme_list['2']
@@ -221,7 +225,10 @@ elseif color_scheme ==# scheme_list['2']
         "let g:alduin_Shout_Become_Ethereal = 1
         "let g:alduin_Shout_Fire_Breath = 1
         colorscheme alduin
-        set t_Co=256
+
+        " 気になる色を変更
+        autocmd ColorScheme * highlight Visual     ctermfg=007 ctermbg=023
+        autocmd ColorScheme * highlight CursorLine ctermbg=023
         syntax on
     endif
 elseif color_scheme ==# scheme_list['3']
@@ -232,10 +239,9 @@ elseif color_scheme ==# scheme_list['3']
         "colorscheme moonshine_lowcontrast
 
         " 気になる色を変更
-        autocmd ColorScheme * highlight Todo ctermfg=222 ctermbg=238 guibg=Magenta
-        autocmd ColorScheme * highlight Visual ctermfg=239
+        autocmd ColorScheme * highlight Todo     ctermfg=222 ctermbg=238 guibg=Magenta
+        autocmd ColorScheme * highlight Visual   ctermfg=239
         autocmd ColorScheme * highlight ErrorMsg ctermbg=178
-        set t_Co=256
         syntax on
     endif
 endif
@@ -355,7 +361,7 @@ if exists('b:is_neocomplete_configured')
     " Popupを閉じる
     inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
     inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+    inoremap <expr><Space> pumvisible() ? "\<C-y><Space>" : "\<Space>"
 endif
 
 " neosnippet関連設定

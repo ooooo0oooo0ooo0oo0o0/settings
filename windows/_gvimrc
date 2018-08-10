@@ -37,7 +37,7 @@ let scheme_list = {
 \}
 
 " color schemeを変更したい場合はここを変える
-let color_scheme = scheme_list['3']
+let color_scheme = scheme_list['1']
 
 if color_scheme ==# scheme_list['1']
     " molokai
