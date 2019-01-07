@@ -242,57 +242,6 @@ inoremap <silent> jj <ESC>
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
 
-" neocomplcache関連
-if exists('b:is_neocomplcache_configured')
-    " 補完を無かったことにする
-    inoremap <expr><C-g> neocomplcache#undo_completion()
-    " 補完候補から、共通する箇所を補完(シェル補完みたいなやつ)
-    inoremap <expr><C-l> neocomplcache#complete_common_string()
-
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-      return neocomplcache#smart_close_popup() . "\<CR>"
-    endfunction
-    " TABキーで補完候補選択
-    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-    " Popupを閉じる
-    inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-    " 候補確定
-    inoremap <expr><C-y>  neocomplcache#close_popup()
-    " 候補をキャンセルし、Popupを閉じる
-    inoremap <expr><C-e>  neocomplcache#cancel_popup()
-endif
-
-" neocomplete関連
-if exists('b:is_neocomplete_configured')
-    " 補完を無かったことにする
-    inoremap <expr><C-g>     neocomplete#undo_completion()
-    " 補完候補から、共通する箇所を補完(シェル補完みたいなやつ)
-    inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-      return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-    endfunction
-    " TABキーで補完候補選択
-    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-    " Popupを閉じる
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><Space> pumvisible() ? "\<C-y><Space>" : "\<Space>"
-endif
-
-" neosnippet関連設定
-if (exists('b:is_neocomplcache_configured') || exists('b:is_neocomplete_configured'))
-    if (dein#check_install('neosnippet.vim') == 0)
-        " snippet候補を展開(マーカーのjump等にも使う)
-        imap <C-k> <Plug>(neosnippet_expand_or_jump)
-        smap <C-k> <Plug>(neosnippet_expand_or_jump)
-        xmap <C-k> <Plug>(neosnippet_expand_target)
-    endif
-endif
-
 "--------------------------
 " Command Mode
 "--------------------------
