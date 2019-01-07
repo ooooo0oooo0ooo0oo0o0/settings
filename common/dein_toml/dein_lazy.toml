@@ -1,21 +1,106 @@
 ##############################
+## 補完系plugin
+##############################
+# vimがluaに対応しているかどうかで何を使うかを決める
+# lua非対応 : neocomplcache
+# lua対応   : neocomplete
+[[plugins]]
+repo     = 'Shougo/neocomplcache.vim'
+if       = '''! has('lua')'''
+on_event = 'InsertEnter'
+hook_add = '''
+    " 補完を有効化
+    let g:neocomplcache_enable_at_startup = 1
+    " AutoComplPopを封印
+    let g:acp_enableAtStartup = 0
+    " 大文字小文字を無視
+    let g:neocomplcache_enable_smart_case = 1
+    " "_"区切りの補完を有効化
+    let g:neocomplcache_enable_underbar_completion = 1
+    " シンタックスをキャッシュする際の最小文字数
+    let g:neocomplcache_min_syntax_length = 3
+    " 補完を自動的にlockするbuffer名のパターン
+    let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+    " ファイルタイプ毎のdictionary
+    let g:neocomplcache_dictionary_filetype_lists = {
+        \ 'default' : ''
+        \ }
+    let b:is_neocomplcache_configured = 1
+'''
+
+[[plugins]]
+repo     = 'Shougo/neocomplete.vim'
+if       = ''' has('lua')'''
+on_event = 'InsertEnter'
+hook_add = '''
+    " AutoComplPopを封印
+    let g:acp_enableAtStartup = 0
+    " 補完を有効化
+    let g:neocomplete#enable_at_startup = 1
+    " 大文字小文字を無視
+    let g:neocomplete#enable_smart_case = 1
+    " シンタックスをキャッシュする際の最小文字数
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+    " ファイルタイプ毎のdictionary
+    let g:neocomplete#sources#dictionary#dictionaries = {
+        \ 'default' : '',
+        \ 'vimshell' : $HOME.'/.vimshell_hist',
+        \ 'scheme' : $HOME.'/.gosh_completions'
+            \ }
+
+    " Define keyword.
+    if !exists('g:neocomplete#keyword_patterns')
+        let g:neocomplete#keyword_patterns = {}
+    endif
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+    let b:is_neocomplete_configured = 1
+'''
+
+[[plugins]]
+repo     = 'Shougo/neosnippet.vim'
+on_event = 'InsertEnter'
+hook_add = '''
+    " 一部のfile typeに対して独自snippetを使う(他はsnippet-snippets任せ)
+    let g:neosnippet#snippets_directory = '~/.vim/snippets'
+    let g:neosnippet#disable_runtime_snippets = {
+        \ 'c'  : 1,
+        \ 'cpp': 1,
+    \}
+
+    " Tab押下で次の入力位置にジャンプ
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+    if has('conceal')
+        set conceallevel=2 concealcursor=niv
+    endif
+'''
+
+[[plugins]]
+repo     = 'Shougo/neosnippet-snippets'
+on_event = 'InsertEnter'
+depends  = ['neosnippet.vim']
+
+##############################
 ## HTML補完
 ##############################
 [[plugins]]
-repo = 'mattn/emmet-vim'
+repo  = 'mattn/emmet-vim'
 on_ft = ['html', 'plantuml']
 
 ##############################
 ## toml用シンタックス
 ##############################
 [[plugins]]
-repo = 'cespare/vim-toml'
+repo  = 'cespare/vim-toml'
 on_ft = 'toml'
 
 ##############################
 ## plantuml用シンタックス
 ##############################
 [[plugins]]
-repo = 'aklt/plantuml-syntax'
+repo  = 'aklt/plantuml-syntax'
 on_ft = 'plantuml'
 

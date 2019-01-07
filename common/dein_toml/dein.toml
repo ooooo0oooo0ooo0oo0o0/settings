@@ -30,7 +30,7 @@ repo = 'Shougo/vimproc.vim'
 build = 'make'
 
 ##############################
-## git操作関係plugin
+## git関係plugin
 ##############################
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
@@ -38,45 +38,31 @@ repo = 'airblade/vim-gitgutter'
 [[plugins]]
 repo = 'tpope/vim-fugitive'
 
+
 ##############################
-## 補完系plugin
+## color scheme
 ##############################
-# vimがluaに対応しているかどうかで何を使うかを決める
-# lua非対応 : neocomplcache
-# lua対応   : neocomplete
 [[plugins]]
-repo = 'Shougo/neocomplcache.vim'
-if   = '''! has('lua')'''
+repo = 'tomasr/molokai'
 
 [[plugins]]
-repo = 'Shougo/neocomplete.vim'
-if   = ''' has('lua')'''
+repo = 'AlessandroYorba/Alduin'
 
 [[plugins]]
-repo = 'Shougo/neosnippet.vim'
-
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
-depends = ['neosnippet.vim']
+repo = 'KKPMW/moonshine-vim'
 
 ##############################
 ## 他
 ##############################
 [[plugins]]
-# color scheme
-repo = 'tomasr/molokai'
-
-[[plugins]]
-# color scheme
-repo = 'AlessandroYorba/Alduin'
-
-[[plugins]]
-# color scheme
-repo = 'KKPMW/moonshine-vim'
-
-[[plugins]]
 # 全角スペースを表示
 repo = 'thinca/vim-zenspace'
+hook_add = '''
+    augroup vimrc-highlight
+      autocmd!
+      autocmd ColorScheme * highlight ZenSpace ctermbg=darkgray guibg=darkgray
+    augroup END
+'''
 
 [[plugins]]
 # 括弧等の操作
@@ -86,3 +72,26 @@ repo = 'tpope/vim-surround'
 # visualモードでの'*'を利用可能にするplugin
 repo = 'nelstrom/vim-visual-star-search'
 
+[[plugins]]
+# fuzzyなfinder
+repo = 'junegunn/fzf'
+merged = '0'
+
+[[plugins]]
+# 同上
+repo = 'junegunn/fzf.vim'
+depends = 'fzf'
+hook_add = '''
+    " grepのback endとしてRipGrepを使用(RipGrepは以下の様な手順で導入可能)
+    "  > curl -LO https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
+    "  > sudo dpkg -i ripgrep_0.10.0_amd64.deb && rm ripgrep_0.10.0_amd64.deb
+    command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \ 'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1,
+    \ <bang>0 ? fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 4..'}, 'up:60%')
+    \         : fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+    \ <bang>0)
+
+    " ctrl+tはtmuxのprefixと重複するので、キーバインドを変更しとく
+    let g:fzf_action = { 'ctrl-o': 'tab split' }
+'''

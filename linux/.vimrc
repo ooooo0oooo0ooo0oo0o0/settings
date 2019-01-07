@@ -75,9 +75,6 @@ set showcmd
 set incsearch
 " highlightサーチ有効
 set hlsearch
-" tab文字等を可視化
-set list
-set listchars=tab:≫-,trail:-,extends:≫,precedes:≪,nbsp:%
 " コマンド,検索パターンの履歴の最大数
 set history=100
 " 自動改行を抑止
@@ -89,10 +86,15 @@ set notagbsearch
 " helpの言語
 set helplang=ja,en
 " 各種文字コード
+scriptencoding utf-8
 set encoding=utf-8
 set fenc=utf-8
 set fileencoding=utf-8
 set fileformats=unix,dos,mac
+
+" tab文字等を可視化
+set list
+set listchars=tab:≫-,trail:-,extends:≫,precedes:≪,nbsp:%
 
 " tag読み込み
 au BufNewFile,BufRead *.c,*.h,*.cpp,*.hpp set tags=./tag_cxx.tags;
@@ -100,19 +102,6 @@ au BufNewFile,BufRead *.php set tags=./tag_php.tags;
 
 " 保存時に末尾の空白を削除
 autocmd BufWritePre * :%s/\s\+$//ge
-
-" grep関連
-set grepprg=grep\ -rnIH\ --exclude-dir=.svn\ --exclude-dir=.git
-autocmd QuickfixCmdPost vimgrep copen
-autocmd QuickfixCmdPost grep copen
-
-" 全角spaceの色設定
-if (dein#check_install('vim-zenspace') == 0)
-    augroup vimrc-highlight
-      autocmd!
-      autocmd ColorScheme * highlight ZenSpace ctermbg=darkgray guibg=darkgray
-    augroup END
-endif
 
 " Unite関連
 if (dein#check_install('unite.vim') == 0)
@@ -123,75 +112,6 @@ if (dein#check_install('unite.vim') == 0)
     let g:unite_source_file_mru_filename_format = ''
 endif
 
-" neocomplcache関連 (lua非対応のvimのみ対象)
-if ((!has('lua')) && (dein#check_install('neocomplcache.vim') == 0))
-    " 補完を有効化
-    let g:neocomplcache_enable_at_startup = 1
-    " AutoComplPopを封印
-    let g:acp_enableAtStartup = 0
-    " 大文字小文字を無視
-    let g:neocomplcache_enable_smart_case = 1
-    " "_"区切りの補完を有効化
-    let g:neocomplcache_enable_underbar_completion = 1
-    " シンタックスをキャッシュする際の最小文字数
-    let g:neocomplcache_min_syntax_length = 3
-    " 補完を自動的にlockするbuffer名のパターン
-    let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-
-    " ファイルタイプ毎のdictionary
-    let g:neocomplcache_dictionary_filetype_lists = {
-        \ 'default' : ''
-        \ }
-
-    let b:is_neocomplcache_configured = 1
-endif
-
-" neocomplete関連 (lua対応vimはこっち)
-if ((has('lua')) && (dein#check_install('neocomplete.vim') == 0))
-    " AutoComplPopを封印
-    let g:acp_enableAtStartup = 0
-    " 補完を有効化
-    let g:neocomplete#enable_at_startup = 1
-    " 大文字小文字を無視
-    let g:neocomplete#enable_smart_case = 1
-    " シンタックスをキャッシュする際の最小文字数
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-    " ファイルタイプ毎のdictionary
-    let g:neocomplete#sources#dictionary#dictionaries = {
-        \ 'default' : '',
-        \ 'vimshell' : $HOME.'/.vimshell_hist',
-        \ 'scheme' : $HOME.'/.gosh_completions'
-            \ }
-
-    " Define keyword.
-    if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
-    endif
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-    let b:is_neocomplete_configured = 1
-endif
-
-" neosnippet関連設定
-if (exists('b:is_neocomplcache_configured') || exists('b:is_neocomplete_configured'))
-    if (dein#check_install('neosnippet.vim') == 0)
-        " 一部のfile typeに対して独自snippetを使う(他はsnippet-snippets任せ)
-        let g:neosnippet#snippets_directory = '~/.vim/snippets'
-        let g:neosnippet#disable_runtime_snippets = {
-            \ 'c'  : 1,
-            \ 'cpp': 1,
-        \}
-
-        " Tab押下で次の入力位置にジャンプ
-        smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-        if has('conceal')
-            set conceallevel=2 concealcursor=niv
-        endif
-    endif
-endif
 
 "==============================
 " color scheme
@@ -204,7 +124,7 @@ let scheme_list = {
 \}
 
 " color schemeを変更したい場合はここを変える
-let color_scheme = scheme_list['3']
+let color_scheme = scheme_list['1']
 
 if color_scheme ==# scheme_list['1']
     " molokai
@@ -296,9 +216,8 @@ nnoremap <Space>d 0v$hx
 " 1行yank
 nnoremap <Space>y 0v$hy
 
-" grep関連
-nnoremap <expr> <Space>g ':vimgrep /\<'.expand('<cword>').'\>/j **/*.'.expand('%:e')
-nnoremap <expr> <Space>G ':sil grep! '.expand('<cword>').' *'
+" grep
+nnoremap <expr> <Space>g ':Rg '.expand('<cword>')
 
 " Unite関連
 if (dein#check_install('unite.vim') == 0)
