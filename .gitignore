@@ -75,3 +75,7 @@ Session.vim
 # Storage debug
 *.d
 
+### vscode ###
+globalStorage
+workspaceStorage
+History

@@ -1,0 +1,28 @@
+{
+    "workbench.colorTheme": "Default Dark+",
+    "vim.hlsearch": true,
+    "vim.normalModeKeyBindings": [
+        {
+            "before":["<ESC>", "<ESC>"],
+            "commands": [
+                ":nohl",
+            ]
+        },
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before" : ["u"],
+            "commands" : ["undo"]
+        },
+        {
+            "before" : ["<C-r>"],
+            "commands" : ["redo"]
+        },
+    ],
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "j"],
+            "after": ["<Esc>"]
+        }
+    ]
+}
