@@ -1,12 +1,28 @@
 {
     "workbench.colorTheme": "Default Dark+",
+
+    "editor.cursorSurroundingLines": 3,
     "vim.hlsearch": true,
     "vim.normalModeKeyBindings": [
         {
+            "before":["<space>", "h"],
+            "commands": ["workbench.action.previousEditor"]
+        },
+        {
+            "before":["<space>", "l"],
+            "commands": ["workbench.action.nextEditor"]
+        },
+        {
+            "before":[">", ">"],
+            "commands": ["workbench.action.moveEditorRightInGroup"]
+        },
+        {
+            "before":["<", "<"],
+            "commands": ["workbench.action.moveEditorLeftInGroup"]
+        },
+        {
             "before":["<ESC>", "<ESC>"],
-            "commands": [
-                ":nohl",
-            ]
+            "commands": [":nohl"]
         },
     ],
     "vim.normalModeKeyBindingsNonRecursive": [
@@ -24,5 +40,6 @@
             "before": ["j", "j"],
             "after": ["<Esc>"]
         }
-    ]
+    ],
+    "plantuml.lintDiagramNoName": false
 }
