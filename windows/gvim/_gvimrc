@@ -5,10 +5,10 @@
 set guioptions-=T
 
 " font
-if has('win32')
+if has('win32') || has('win64')
   " Windows用
   "set guifont=MS_Gothic:h10:cSHIFTJIS
-  set guifont=Myrica_M:h11:cSHIFTJIS
+  set guifont=MyricaM\ M:h11:cSHIFTJIS
   " 行間隔の設定
   set linespace=1
   " 一部のUCS文字の幅を自動計測して決める
