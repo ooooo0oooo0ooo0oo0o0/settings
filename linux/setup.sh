@@ -57,3 +57,7 @@ then
     chmod 444 $HOME/$COMPILED_ZSHRC
 fi
 
+#########################################
+# DENO(JS runtime)の導入
+#########################################
+curl -fsSL https://deno.land/install.sh | sh

@@ -170,6 +170,13 @@ alias gr='git reset --hard HEAD'
 alias gs='git show'
 
 #########################################
+# 環境変数
+#########################################
+# DENO(JS runtime)関連
+export DENO_INSTALL="$HOME/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
+#########################################
 # 他
 #########################################
 # .zshrc更新時に自動compile。

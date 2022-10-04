@@ -34,6 +34,9 @@ endif
 "==============================
 " 各種オプションの設定
 "==============================
+"--------------------------
+" Vim標準
+"--------------------------
 " タブ文字の表示幅
 set tabstop=4
 " タブ入力を複数の空白入力に置き換える
@@ -65,10 +68,6 @@ set statusline+=%w           " プレビューウィンドウの場合はその�
 set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'} " エンコード
 set statusline+=%=           " 以降がステータス行の右側の表示設定
 set statusline+=[%l/%LL:%v]  " 行/列番号
-if (dein#check_install('vim-fugitive') == 0)
-    " 現在のgitブランチを表示
-    set statusline+=%{fugitive#statusline()}
-endif
 " 入力中のコマンドを表示する
 set showcmd
 " インクリメンタルサーチ有効
@@ -103,7 +102,28 @@ au BufNewFile,BufRead *.php set tags=./tag_php.tags;
 " 保存時に末尾の空白を削除
 autocmd BufWritePre * :%s/\s\+$//ge
 
-" Unite関連
+"--------------------------
+" vim-fugitive
+"--------------------------
+if (dein#check_install('vim-fugitive') == 0)
+    " 現在のgitブランチを表示
+    set statusline+=%{fugitive#statusline()}
+endif
+
+"--------------------------
+" vim-zenspace
+"--------------------------
+" 全角spaceの色設定
+if (dein#check_install('vim-zenspace') == 0)
+    augroup vimrc-highlight
+      autocmd!
+      autocmd ColorScheme * highlight ZenSpace ctermbg=darkgray guibg=darkgray
+    augroup END
+endif
+
+"--------------------------
+" Unite
+"--------------------------
 if (dein#check_install('unite.vim') == 0)
     let g:unite_enable_start_insert=1
     let g:unite_source_history_yank_enable =1
@@ -112,6 +132,66 @@ if (dein#check_install('unite.vim') == 0)
     let g:unite_source_file_mru_filename_format = ''
 endif
 
+"--------------------------
+" denops
+"--------------------------
+if (dein#check_install('denops.vim') == 0)
+    " Vim 8.2.3452以上じゃないとdenops.vimは使えんとの事...
+    " その旨の警告PUを無効化しておく。
+    let g:denops_disable_version_check=1
+endif
+
+"--------------------------
+" ddc.vim
+"--------------------------
+if (dein#check_install('ddc.vim') == 0)
+
+    " Use Popup Menu
+    call ddc#custom#patch_global('completionMenu', 'pum.vim')
+
+    " Use around source.
+    " https://github.com/Shougo/ddc-around
+    call ddc#custom#patch_global('sources', ['around'])
+
+    " Use matcher_head and sorter_rank.
+    " https://github.com/Shougo/ddc-matcher_head
+    " https://github.com/Shougo/ddc-sorter_rank
+    call ddc#custom#patch_global('sourceOptions', {
+          \ '_': {
+          \   'matchers': ['matcher_head'],
+          \   'sorters': ['sorter_rank']},
+          \   'converters': ['converter_remove_overlap'],
+          \ })
+
+    " Change source options
+    call ddc#custom#patch_global('sourceOptions', {
+          \ 'around': {'mark': 'Around'},
+          \ })
+    call ddc#custom#patch_global('sourceParams', {
+          \ 'around': {'maxSize': 500},
+          \ })
+
+    " Customize settings on a filetype
+    call ddc#custom#patch_filetype(['c', 'cpp'], 'sources', ['around', 'clangd'])
+    call ddc#custom#patch_filetype(['c', 'cpp'], 'sourceOptions', {
+          \ 'clangd': {'mark': 'C'},
+          \ })
+    call ddc#custom#patch_filetype('markdown', 'sourceParams', {
+          \ 'around': {'maxSize': 100},
+          \ })
+
+    " <TAB>: completion.
+    inoremap <silent><expr> <TAB>
+    \ ddc#map#pum_visible() ? '<C-n>' :
+    \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+    \ '<TAB>' : ddc#map#manual_complete()
+
+    " <S-TAB>: completion back.
+    inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+
+    " Use ddc.
+    call ddc#enable()
+endif
 
 "==============================
 " color scheme
