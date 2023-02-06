@@ -1,0 +1,34 @@
+" 設定の再読み込み
+nnoremap <Space>s :<C-u>source ~/.vsvimrc<CR>
+
+" クリップボード
+set clipboard=unnamed
+
+" 検索文字入力途中に候補へジャンプしない
+set noincsearch
+
+" 検索結果をハイライト
+set hlsearch
+
+" 検索時の大文字小文字の区別の設定
+set smartcase
+
+" コマンドモードに移る時にIMEをOFFにする
+set iminsert=0
+"-1はiminsertの値に同じ
+set imsearch=-1
+
+" 入力中のコマンド表示
+set showcmd
+
+" 一発で現在の階層の始まりの括弧へ移動
+noremap { [{
+noremap } ]}
+
+" 検索結果のハイライトを消す
+noremap <Esc><Esc> :<C-u>nohlsearch<CR>
+
+" tab移動(左右)
+nnoremap <silent> <Space>l :<C-u>tabnext<CR>
+nnoremap <silent> <Space>h :<C-u>tabprevious<CR>
+
