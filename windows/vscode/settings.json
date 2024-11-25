@@ -1,6 +1,4 @@
 {
-    "workbench.colorTheme": "Default Dark+",
-
     "editor.cursorSurroundingLines": 3,
     "vim.hlsearch": true,
     "vim.normalModeKeyBindings": [
@@ -41,5 +39,21 @@
             "after": ["<Esc>"]
         }
     ],
-    "plantuml.lintDiagramNoName": false
+    "plantuml.lintDiagramNoName": false,
+    "editor.renderWhitespace": "boundary",
+    "vim.handleKeys": {
+        "<C-d>": true,
+        "<C-s>": false,
+        "<C-z>": false,
+        "<C-p>": false,
+    },
+    "editor.fontFamily": "Consolas, Myrica M",
+    "vim.visualstar": true,
+    "vim.ignorecase": false,
+    "files.trimTrailingWhitespace": true,
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "editor.stickyScroll.enabled": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "update.showReleaseNotes": false
 }
