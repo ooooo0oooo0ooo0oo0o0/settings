@@ -51,9 +51,17 @@
     "vim.visualstar": true,
     "vim.ignorecase": false,
     "files.trimTrailingWhitespace": true,
+    "[markdown]": {
+      "files.trimTrailingWhitespace": false
+    },
     "editor.tabSize": 2,
     "files.insertFinalNewline": true,
     "editor.stickyScroll.enabled": false,
     "security.workspace.trust.untrustedFiles": "open",
-    "update.showReleaseNotes": false
+    "update.showReleaseNotes": false,
+    "[vue]": {
+        "editor.defaultFormatter": "Vue.volar"
+    },
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "files.eol": "\n"
 }

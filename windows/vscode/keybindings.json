@@ -9,5 +9,9 @@
         "key": "ctrl+.",
         "command": "workbench.action.focusFirstEditorGroup",
         "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+a",
+        "command": "editor.emmet.action.balanceOut"
     }
 ]
